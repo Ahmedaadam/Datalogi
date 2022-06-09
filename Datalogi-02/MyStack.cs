@@ -6,21 +6,31 @@ using System.Threading.Tasks;
 
 namespace Datalogi_02
 {
-    public class MyStack<T> : SimpleStack<T>
+    public class MyStack<T> : SimpleStack<T>, SimpleQueue<T>
     {
-        private MyNode<T> Top = null;
+        private MyNode<T> Top = null; //motsvarar top of stack
+        private MyNode<T> Last = null; //motsvarar bottom of stack
        public void Push(T value)
         {
-            MyNode<T> oldNode = Top;
+            var oldTop = Top;
             Top = new MyNode<T>();
             Top.Data = value;
-            Top.Next = oldNode;
+            if(Top != null)
+            {
+                
+                Top.Next = oldTop;
+            }
+            else
+            {
+                Last = Top;
+            }
+            
         }
         public T Peek()
         {
             if(Top == null)
             {
-                throw new Exception("Listan är tom");
+                throw new Exception("Stacken är tom. Ingen värde att se");
             }
             else
             {
@@ -33,7 +43,7 @@ namespace Datalogi_02
         {
             if(Top == null)
             {
-                throw new Exception(" WTF ");
+                throw new Exception("Tom stack, finns inget värde att poppa. ");
             }
             else
             {
@@ -43,7 +53,35 @@ namespace Datalogi_02
             }
         }
 
-        
+        public void AddLast(T value)
+        {
+            if(Last == null)
+            {
+                Push(value);
+            }
+            else
+            {
+                //Jag skapar en variabel för den sista i kön
+                var oldLast = Last;
+                //Jag skapar en ny node sist i kön
+                Last = new MyNode<T>();
+                //Lägger till data i node
+                Last.Data = value;
+                // Om det finns data i kön så refererar jag till den nästsista i kön
+                oldLast.Next = Last;
+            }
+        }
+
+        public T GetFirst()
+        {
+
+            return Peek(); 
+        }
+
+        public void RemoveFirst()
+        {
+            Pop();
+        }
 
         public class MyNode<T>
         {
@@ -57,5 +95,13 @@ namespace Datalogi_02
         public void Push(T value);
         public T Pop();
         public T Peek();
+    }
+
+    public interface SimpleQueue<T>
+    {
+        public void AddLast(T value);
+        public T GetFirst();
+        public void RemoveFirst();
+
     }
 }

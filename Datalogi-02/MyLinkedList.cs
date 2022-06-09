@@ -41,10 +41,25 @@ namespace Datalogi_02
             }
             return nodeReference.Data;
         }
+
+        public void RemoveAt(int index)
+        {
+            var nodeToDelete = Head;
+            // Steg 1 Hitta indexet som sak tas bort
+            for(int i = 0; i < index - 1; i++)
+            {
+                 nodeToDelete = nodeToDelete.Next;
+
+            }
+
+            // Steg 2 Ta bort noden på indexet
+            nodeToDelete.Next = nodeToDelete.Next.Next;
+        }
     }
     public class MyNode<T>
     {
         public T Data { get; set; }
+        public int Index { get; set; }
         public MyNode<T> Next { get; set; }
     }
 }
